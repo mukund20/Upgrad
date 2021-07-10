@@ -1,11 +1,21 @@
 pipeline {
   agent any
   stages {
-    stage('build') {
+    stage('Build') {
       steps {
-        sleep 2
-        echo 'executing build stage'
-        sh 'echo "you can run npm/gradle/mvn command"'
+        sh 'mvn \'clean install -DskipTests\''
+      }
+    }
+
+    stage('Unit Test') {
+      steps {
+        sh 'mvn \'test\''
+      }
+    }
+
+    stage('Integration Test') {
+      steps {
+        sh 'mvn \'verify -DskipUnitTests -Parq-wildfly-swarm \''
       }
     }
 
